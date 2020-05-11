@@ -1,5 +1,5 @@
 var express = require('express');
-var oauth2 = require('../models/oauth2.model');
+var oauth2 = require('../controllers/oauth2.controller');
  
 var router = express.Router();
  

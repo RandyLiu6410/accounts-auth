@@ -1,16 +1,11 @@
-var mysql = require('mysql');
 var jwt = require('jsonwebtoken');  // JWT 簽名和驗證
-var conf = require('../conf');
- 
-var connection = mysql.createConnection(conf.db);
-var tableName = 'accounts';
-var sql;
+var config = require('../config');
+let accounts = require('./accounts.controller')
  
 module.exports = {
     // 使用者登入認證
-    login: function (req, callback) {
-        sql = mysql.format('SELECT * FROM ' + tableName + ' WHERE username = ? AND password = ?', [req.body.username, req.body.password]);
-        return connection.query(sql, callback);
+    login: function (req, res, next) {
+        accounts.accountLogin(req, res, next);
     },
     // 產生 OAuth 2.0 和 JWT 的 JSON 格式令牌訊息
     createToken: function (req, callback) {   
@@ -21,16 +16,16 @@ module.exports = {
         };
  
         // 產生 JWT
-        let token = jwt.sign(payload, conf.secret, {
+        let token = jwt.sign(payload, config.secret, {
             algorithm: 'HS256',
-            expiresIn: conf.increaseTime + 's'  // JWT 的到期時間 (當前 UNIX 時間戳 + 設定的時間)。必須加上時間單位，否則預設為 ms (毫秒)
+            expiresIn: config.increaseTime + 's'  // JWT 的到期時間 (當前 UNIX 時間戳 + 設定的時間)。必須加上時間單位，否則預設為 ms (毫秒)
         })
                  
         // JSON 格式符合 OAuth 2.0 標準，除自訂 info 屬性是為了讓前端取得額外資訊 (例如使用者名稱)，
         return callback({
             access_token: token,
             token_type: 'bearer',
-            expires_in: (Date.parse(new Date()) / 1000) + conf.increaseTime,    // UNIX 時間戳 + conf.increaseTime
+            expires_in: (Date.parse(new Date()) / 1000) + config.increaseTime,    // UNIX 時間戳 + config.increaseTime
             scope: req.results[0].role,
             info: {
                 username: req.results[0].username
@@ -46,7 +41,7 @@ module.exports = {
         }
      
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] == 'Bearer') {
-            jwt.verify(req.headers.authorization.split(' ')[1], conf.secret, function (err, decoded) {
+            jwt.verify(req.headers.authorization.split(' ')[1], config.secret, function (err, decoded) {
                 if (err) {
                     res.customStatus = 400;
  

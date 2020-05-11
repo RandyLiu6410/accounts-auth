@@ -1,5 +1,5 @@
 var express = require('express');
-var oauth2 = require('../models/oauth2.model');
+var oauth2 = require('../controllers/oauth2.controller');
  
 var router = express.Router();
  
@@ -12,20 +12,7 @@ router.route('/')
                 return;
             }
  
-            oauth2.login(req, function (err, results, fields) {
-                if (err) {
-                    res.sendStatus(500);
-                    return console.error(err);
-                }
- 
-                if (!results.length) {
-                    res.status(401).json({ error: 'invalid_client', error_description: '登入驗證失敗！' });
-                    return;
-                }
- 
-                req.results = results;
-                next();
-            });
+            oauth2.login(req, res, next);
         },
         function (req, res) {
             oauth2.createToken(req, function (results) {
