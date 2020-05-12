@@ -44,7 +44,6 @@ const addAccount = (req, res) => {
             password: bcrypt.hashSync(req.body.password, 10),
             role: req.body.role,
         };
-        console.log(insertValues)
         const newAccount = new Account (insertValues);
         newAccount.save()
         .then(() => res.json(Responce.responce(1, [{username: insertValues.username, role: insertValues.role}], 'Success.')))
