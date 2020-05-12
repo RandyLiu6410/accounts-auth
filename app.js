@@ -3,7 +3,6 @@ var express = require('express');
 var cors = require('cors');                 // 跨來源資源共用 (允許不同網域的 HTTP 請求)
  
 var config = require('./config');
-var functions = require('./functions');
 var oauth2Token = require('./routes/oauth2-token');
 var tokenVerify = require('./routes/token-verify');
 var accounts = require('./routes/accounts');
@@ -24,7 +23,6 @@ app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
  
-//app.use(functions.passwdCrypto);
 app.use('/oauth2/token', oauth2Token);
  
 // 不須 token 即可訪問的 Web API 須定義在此上面，通常登入頁面 (此例為登入驗證取得 token 頁面的 /auth2/token)

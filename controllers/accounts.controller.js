@@ -64,7 +64,7 @@ const addAccount = (req, res) => {
 const deleteAccount = (req, res) => {
     Account.deleteOne({username: req.params.username})
     .then(err => {
-        if (err) {
+        if (err.deletedCount == 0) {
             res.json(Responce.responce(-1, [], err));
             return;
         }
@@ -90,7 +90,7 @@ const putAccount = (req, res) => {
           ...insertValues
         }},
         { runValidators: true })
-        .then(() => res.json(Responce.responce(1, [], 'Success.')))
+        .then(() => res.json(Responce.responce(1, [insertValues], 'Success.')))
         .catch(err => {
             res.json(Responce.responce(-1, [], err));
             return;

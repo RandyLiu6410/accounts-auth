@@ -7,7 +7,9 @@ const envVarSchema = Joi.object().keys({
   NODE_ENV: Joi.string().default('development').allow(['development', 'production']), // 字串且預設值為development 並只允許兩種參數
   PORT: Joi.number().default(3000),
   ATLAS_URI: Joi.string(),
-  VERSION: Joi.string().default('1.0.0')
+  VERSION: Joi.string().default('1.0.0'),
+  secret: Joi.string(),
+  increaseTime: Joi.number()
 }).unknown().required();
 // process.env 撈取 .env 內的變數做 joi 驗證
 const { error, value: envVars } = Joi.validate(process.env, envVarSchema);
@@ -21,12 +23,8 @@ const config = {
   env: envVars.NODE_ENV, // 開發模式(development、production)
   port: envVars.PORT, // API 阜號
   uri: envVars.ATLAS_URI, //ATLAS URI
-  // 自訂加密密碼的加鹽
-  salt: '@2#!A9x?3',
-  // JWT 自訂私鑰
-  secret: 'ftP@ssword',
-  // JWT 加上多少時間過期 (UNIX 時間戳)
-  increaseTime: 1000
+  secret: envVars.secret, // JWT 自訂私鑰
+  increaseTime: envVars.increaseTime // JWT 加上多少時間過期 (UNIX 時間戳)
 };
 
 module.exports = config; // 匯出共用
