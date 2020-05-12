@@ -4,7 +4,7 @@ Accounts management for REST.
 ## Features
 * Create and manage users
 * Create sessions (JWT)
-* Database: MongoDB
+* Database: MongoDB Atlas
 
 ## Schema Model (Mongoose)
 `account.model.js` is used to create mongoose schema for account collection. 
