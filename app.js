@@ -10,7 +10,7 @@ let register = require('./routes/register');
 
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.uri, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(config.uri, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
@@ -33,6 +33,6 @@ app.use(tokenVerify);
  
 app.use('/accounts', accounts);
  
-app.listen(process.env.port, function () {
-    console.log('app listening on port ' + process.env.port + '!');
+app.listen(config.port, function () {
+    console.log('app listening on port ' + config.port + '!');
 });
