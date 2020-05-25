@@ -5,7 +5,6 @@ var accounts = require('../controllers/accounts.controller');
 var router = express.Router();
  
 // oauth2.accessControl 定義在這，對 Web API 的所有 CRUD 確認權限
-/*
 router.use(oauth2.accessControl, function (req, res, next) {
     // 無權限
     if (res.customError) {
@@ -15,18 +14,12 @@ router.use(oauth2.accessControl, function (req, res, next) {
  
     next();
 });
-*/
+
 // 獲取 /accounts 請求
 router.route('/')
     // 取得所有資源
     // oauth2.accessControl 定義在這，可針對 Web API 的 CRUD 個別確認權限
-    .get(oauth2.accessControl, function (req, res) {
-        // 無權限
-        if (res.customError) {
-            res.status(res.customStatus).json(res.customError);
-            return;
-        }
- 
+    .get(function (req, res) {
         accounts.getAccounts(req, res);
     })
     // 新增一筆資源

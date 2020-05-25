@@ -40,9 +40,8 @@ const addAccount = (req, res) => {
       if (!result) {
         // 取得新增參數
         const insertValues = {
-            username: req.body.username,
+            ...req.body,
             password: bcrypt.hashSync(req.body.password, 10),
-            role: req.body.role,
         };
         const newAccount = new Account (insertValues);
         newAccount.save()

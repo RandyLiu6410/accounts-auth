@@ -6,6 +6,7 @@ var config = require('./config');
 var oauth2Token = require('./routes/oauth2-token');
 var tokenVerify = require('./routes/token-verify');
 var accounts = require('./routes/accounts');
+let register = require('./routes/register');
 
 const mongoose = require('mongoose');
 
@@ -22,6 +23,8 @@ app.use(cors());
 // 使用 bodyparser.json() 將 HTTP 請求方法 POST、DELETE、PUT 和 PATCH，放在 HTTP 主體 (body) 發送的參數存放在 req.body
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+
+app.use('/register', register);
  
 app.use('/oauth2/token', oauth2Token);
  
