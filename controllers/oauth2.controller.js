@@ -23,6 +23,7 @@ module.exports = {
                  
         // JSON 格式符合 OAuth 2.0 標準，除自訂 info 屬性是為了讓前端取得額外資訊 (例如使用者名稱)，
         return callback({
+            status: 1,
             access_token: token,
             token_type: 'bearer',
             expires_in: (Date.parse(new Date()) / 1000) + config.increaseTime,    // UNIX 時間戳 + config.increaseTime
